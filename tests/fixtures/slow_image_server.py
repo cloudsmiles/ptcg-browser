@@ -13,6 +13,13 @@ IMAGE = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQV
 
 
 class SlowImages(Handler):
+    def handle(self):
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            # 断言完成后浏览器会关闭，剩余的慢图片请求可正常取消。
+            pass
+
     def send_head(self):
         if self.path.startswith('/thumbnails/'):
             time.sleep(2)

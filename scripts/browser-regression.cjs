@@ -41,6 +41,8 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
       await page.locator('#modalClose').click();
       // 同一页面宽度变化后仍能定位尾部，且没有横向溢出。
       await page.setViewportSize({ width: width === 390 ? 1440 : 390, height: 900 });
+      // 等待 resize 引发的布局与虚拟列表更新，再按新的页面高度滚动。
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
       await page.waitForFunction(() => document.querySelector('.card-tile[data-index="2447"]'));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
