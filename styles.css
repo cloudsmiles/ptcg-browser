@@ -247,6 +247,11 @@ a { color: var(--blue); }
   opacity: 0; transition: opacity .3s; z-index: 2;
 }
 .card-art .real-img.loaded, .modal-face-wrap > .real-img.loaded { opacity: 1; }
+.card-art .image-status {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: var(--muted); font-size: 13px;
+}
+.card-art:has(.real-img.loaded) .image-status { display: none; }
 .card-tile:hover .card-art .real-img.loaded { transform: scale(1.045); }
 
 /* ---------- 本地简体中文卡面 ---------- */

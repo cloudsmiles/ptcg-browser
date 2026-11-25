@@ -157,7 +157,30 @@
   // 真实卡图加载成功则显示；主图床失败时切换备用图床；都失败则移除，露出下方本地卡面
   function bindCardImage(img) {
     if (!img) return;
-    var ok = function () { img.classList.add('loaded'); };
+    if (img.cancelImageRetry) img.cancelImageRetry();
+    var attempts = 0;
+    var retryTimer;
+    var unavailable = function () {
+      var status = img.parentElement && img.parentElement.querySelector('.image-status');
+      if (status) status.textContent = '图片暂不可用';
+      img.remove();
+    };
+    var ok = function () {
+      // 本站 202 响应使用 320×1 透明图标记后台处理中，保留文字卡面并稍后重试。
+      if (img.naturalWidth > img.naturalHeight * 10) {
+        if (++attempts > 30) { unavailable(); return; }
+        img.classList.remove('loaded');
+        retryTimer = window.setTimeout(function () {
+          if (!img.isConnected) return;
+          var next = img.getAttribute('data-alt') || img.src;
+          img.removeAttribute('srcset');
+          img.removeAttribute('sizes');
+          img.src = next.split('?')[0] + '?image_retry=' + attempts;
+        }, 1500 + Math.random() * 1000);
+        return;
+      }
+      img.classList.add('loaded');
+    };
     var failed = function () {
       var alt = img.getAttribute('data-alt');
       if (alt && img.src !== alt) {
@@ -165,14 +188,18 @@
         img.removeAttribute('srcset');
         img.removeAttribute('sizes');
         img.src = alt;
-        img.addEventListener('load', ok);
-        img.addEventListener('error', function () { img.remove(); });
         return;
       }
-      img.remove();
+      unavailable();
     };
+    img.cancelImageRetry = function () {
+      window.clearTimeout(retryTimer);
+      img.removeEventListener('load', ok);
+      img.removeEventListener('error', failed);
+    };
+    img.addEventListener('load', ok);
+    img.addEventListener('error', failed);
     if (img.complete) { (img.naturalWidth > 0 ? ok : failed)(); }
-    else { img.addEventListener('load', ok); img.addEventListener('error', failed); }
   }
   function thumbnailOf(card, width) {
     var match = (card.img || '').match(/^https:\/\/cdn\.jsdelivr\.net\/gh\/duanxr\/PTCG-CHS-Datasets@([a-f0-9]{40})\/img\/(\d+)\/(\d+)\.png$/);
@@ -479,6 +506,7 @@
     el.setAttribute('aria-label', '查看 ' + card.n + ' 详情');
     el.innerHTML =
       '<div class="card-art">' +
+        '<span class="image-status">图片加载中</span>' +
         realImgTag(card, false) +
         '<button type="button" class="fav-btn' + (fav ? ' on' : '') + '" data-fav="' + esc(favKey(card)) + '" aria-label="收藏">' + (fav ? '♥' : '♡') + '</button>' +
         '<span class="set-badge">' + esc(card.sn) + ' · ' + esc(card.lid) + '</span>' +

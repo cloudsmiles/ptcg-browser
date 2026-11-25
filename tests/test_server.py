@@ -53,7 +53,7 @@ class ServerTest(unittest.TestCase):
                 response.read()
                 self.assertEqual(response.status, 400)
                 download.assert_not_called()
-            with patch.object(module.thumbnails, 'get_original', return_value=b'png-content'):
+            with patch.object(module.thumbnails, 'request_original', return_value=b'png-content'):
                 connection.request('GET', f'/originals/{revision}/534/47.png')
                 response = connection.getresponse()
                 self.assertEqual(response.status, 200)
@@ -61,6 +61,32 @@ class ServerTest(unittest.TestCase):
                 self.assertIsNone(response.getheader('Location'))
                 self.assertEqual(response.read(), b'png-content')
             connection.close()
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join()
+
+    def test_pending_original_is_retryable_without_error_response(self):
+        spec = importlib.util.spec_from_file_location('server', ROOT / 'serve.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        server = ThreadingHTTPServer(('127.0.0.1', 0), module.Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            with patch.object(module.thumbnails, 'request_original', return_value=None, create=True), patch.object(
+                module.thumbnails, 'get_original', side_effect=OSError('上游暂时超时')
+            ):
+                connection = http.client.HTTPConnection(*server.server_address)
+                connection.request('GET', '/originals/' + 'a' * 40 + '/533/32.png')
+                response = connection.getresponse()
+                body = response.read()
+                self.assertEqual(response.status, 202)
+                self.assertEqual(response.getheader('Cache-Control'), 'no-store')
+                self.assertEqual(response.getheader('Retry-After'), '2')
+                self.assertEqual(response.getheader('Content-Type'), 'image/svg+xml')
+                self.assertIn(b'width="320" height="1"', body)
+                connection.close()
         finally:
             server.shutdown()
             server.server_close()

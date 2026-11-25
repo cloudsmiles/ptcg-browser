@@ -2,6 +2,8 @@
 from io import BytesIO
 from pathlib import Path
 import threading
+import concurrent.futures
+import time
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -32,7 +34,7 @@ class ThumbnailTest(unittest.TestCase):
                     thumbnails.get_thumbnail(f'/thumbnails/{REVISION}/240/545/16.webp')
 
     def test_expired_download_budget_does_not_start_request(self):
-        with patch.object(thumbnails.time, 'monotonic', side_effect=[0, 13, 14]), patch.object(
+        with patch.object(thumbnails.time, 'monotonic', side_effect=[0, 17, 18, 19]), patch.object(
             thumbnails, 'urlopen'
         ) as request:
             with self.assertRaisesRegex(OSError, '原图下载失败'):
@@ -52,6 +54,93 @@ class ThumbnailTest(unittest.TestCase):
                 self.assertEqual(download.call_count, 1)
                 with self.assertRaises(ValueError):
                     thumbnails.get_original('/originals/../../etc/passwd')
+
+    def test_concurrent_original_requests_join_slow_download(self):
+        image = BytesIO()
+        Image.new('RGB', (20, 30)).save(image, 'PNG')
+        started = threading.Event()
+
+        def slow_download(*args, **kwargs):
+            started.set()
+            time.sleep(0.15)
+            return image.getvalue()
+
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'QUEUE_TIMEOUT', 0.01
+            ), patch.object(thumbnails, 'download_original', side_effect=slow_download) as download:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
+                    route = f'/originals/{REVISION}/533/32.png'
+                    first = pool.submit(thumbnails.get_original, route)
+                    self.assertTrue(started.wait(1))
+                    followers = [pool.submit(thumbnails.get_original, route) for _ in range(11)]
+                    self.assertEqual(first.result(timeout=2), image.getvalue())
+                    for request in followers:
+                        self.assertEqual(request.result(timeout=2), image.getvalue())
+                self.assertEqual(download.call_count, 1)
+
+    def test_thumbnail_and_detail_share_original_cache(self):
+        image = BytesIO()
+        Image.new('RGB', (20, 30)).save(image, 'PNG')
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'download_original', return_value=image.getvalue()
+            ) as download:
+                thumbnails.get_thumbnail(f'/thumbnails/{REVISION}/240/533/32.webp')
+                self.assertEqual(thumbnails.get_original(f'/originals/{REVISION}/533/32.png'), image.getvalue())
+                self.assertEqual(download.call_count, 1)
+
+    def test_failed_shared_download_can_retry(self):
+        image = BytesIO()
+        Image.new('RGB', (20, 30)).save(image, 'PNG')
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'download_original', side_effect=[OSError('上游暂时不可用'), image.getvalue()]
+            ) as download:
+                route = f'/originals/{REVISION}/533/32.png'
+                with self.assertRaisesRegex(OSError, '上游暂时不可用'):
+                    thumbnails.get_original(route)
+                self.assertEqual(thumbnails.ORIGINAL_INFLIGHT, {})
+                self.assertEqual(thumbnails.get_original(route), image.getvalue())
+                self.assertEqual(download.call_count, 2)
+
+    def test_background_original_returns_pending_then_cached_image(self):
+        image = BytesIO()
+        Image.new('RGB', (20, 30)).save(image, 'PNG')
+        release = threading.Event()
+        finished = threading.Event()
+
+        def slow_download(*args):
+            release.wait(2)
+            finished.set()
+            return image.getvalue()
+
+        with tempfile.TemporaryDirectory() as directory:
+            route = f'/originals/{REVISION}/533/101.png'
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'download_original', side_effect=slow_download
+            ) as download:
+                try:
+                    self.assertIsNone(thumbnails.request_original(route))
+                    self.assertIsNone(thumbnails.request_original(route))
+                finally:
+                    release.set()
+                self.assertTrue(finished.wait(2))
+                # 同步调用加入同一个下载，等待原子缓存写入完成。
+                self.assertEqual(thumbnails.get_original(route), image.getvalue())
+                self.assertEqual(thumbnails.request_original(route), image.getvalue())
+                self.assertEqual(download.call_count, 1)
+
+    def test_background_queue_is_bounded(self):
+        pending = concurrent.futures.Future()
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'ORIGINAL_JOBS', {'busy': (pending, time.monotonic())}
+            ), patch.object(thumbnails, 'MAX_ORIGINAL_JOBS', 1), patch.object(
+                thumbnails.ORIGINAL_WORKERS, 'submit'
+            ) as submit:
+                self.assertIsNone(thumbnails.request_original(f'/originals/{REVISION}/533/101.png'))
+                submit.assert_not_called()
 
     def test_sizes_cache_and_invalid_path(self):
         original = BytesIO()

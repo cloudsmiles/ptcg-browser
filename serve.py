@@ -57,14 +57,20 @@ class Handler(SimpleHTTPRequestHandler):
         request_path = unquote(urlsplit(self.path).path)
         if request_path.startswith('/originals/'):
             try:
-                body = thumbnails.get_original(request_path)
+                body = thumbnails.request_original(request_path)
             except ValueError:
                 self.send_error(400, 'Invalid original path')
                 return None
-            except OSError:
+            if body is None:
+                # 320×1 透明图是前端约定的“处理中”标记，不作为真实卡图展示。
+                body = b'<svg xmlns="http://www.w3.org/2000/svg" width="320" height="1"></svg>'
                 self.response_cache_control = 'no-store'
-                self.send_error(503, 'Original temporarily unavailable')
-                return None
+                self.send_response(202)
+                self.send_header('Retry-After', '2')
+                self.send_header('Content-Type', 'image/svg+xml')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                return BytesIO(body)
             self.response_cache_control = 'public, max-age=31536000, immutable'
             self.send_response(200)
             self.send_header('Content-Type', 'image/png')
