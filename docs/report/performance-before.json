@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-25T03:19:31.463Z",
+  "browser": "150.0.7871.125",
+  "imagePolicy": "固定 1px 图片，排除外部 CDN 耗时",
+  "runs": [
+    {
+      "first": {
+        "readyMs": 844.5,
+        "fcpMs": 664,
+        "localTransferBytes": 1757559,
+        "longTasks": [
+          {
+            "start": 74.20000000298023,
+            "duration": 172
+          },
+          {
+            "start": 596.0999999940395,
+            "duration": 247
+          }
+        ]
+      },
+      "searchMs": 434.26697600000034,
+      "loadMoreMedianMs": 45.5,
+      "loadMoreMaxMs": 209.6000000089407,
+      "heapBytes": 22323252,
+      "dom": {
+        "documents": 1,
+        "nodes": 111635,
+        "jsEventListeners": 12218
+      },
+      "final": {
+        "renderedCards": 2448,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 59,
+        "longestTaskMs": 247
+      },
+      "errors": []
+    },
+    {
+      "first": {
+        "readyMs": 699.2000000029802,
+        "fcpMs": 180,
+        "localTransferBytes": 1757559,
+        "longTasks": [
+          {
+            "start": 42,
+            "duration": 114
+          },
+          {
+            "start": 481,
+            "duration": 218
+          }
+        ]
+      },
+      "searchMs": 263.03404899999987,
+      "loadMoreMedianMs": 52.1000000089407,
+      "loadMoreMaxMs": 92.69999998807907,
+      "heapBytes": 22321292,
+      "dom": {
+        "documents": 1,
+        "nodes": 111635,
+        "jsEventListeners": 12216
+      },
+      "final": {
+        "renderedCards": 2448,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 58,
+        "longestTaskMs": 286
+      },
+      "errors": []
+    },
+    {
+      "first": {
+        "readyMs": 1191.3999999910593,
+        "fcpMs": 396,
+        "localTransferBytes": 1757559,
+        "longTasks": [
+          {
+            "start": 44,
+            "duration": 322
+          },
+          {
+            "start": 894.7000000029802,
+            "duration": 296
+          }
+        ]
+      },
+      "searchMs": 317.0304560000004,
+      "loadMoreMedianMs": 53.900000005960464,
+      "loadMoreMaxMs": 129.8999999910593,
+      "heapBytes": 22319608,
+      "dom": {
+        "documents": 1,
+        "nodes": 111635,
+        "jsEventListeners": 12216
+      },
+      "final": {
+        "renderedCards": 2448,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 61,
+        "longestTaskMs": 382
+      },
+      "errors": []
+    }
+  ]
+}

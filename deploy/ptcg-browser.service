@@ -1,0 +1,21 @@
+[Unit]
+Description=PTCG 卡牌浏览器
+After=network.target
+
+[Service]
+Type=simple
+User=ptcg
+Group=ptcg
+WorkingDirectory=/www/ptcg-browser/current
+ExecStart=/www/ptcg-browser/venv/bin/python serve.py --bind 127.0.0.1 --port 8096 --data-dir /var/lib/ptcg-browser/data --cache-dir /var/cache/ptcg-browser/thumbnails
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/cache/ptcg-browser
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=同步并发布 PTCG 中文卡牌数据
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ptcg
+Group=ptcg
+WorkingDirectory=/www/ptcg-browser/current
+ExecStart=/www/ptcg-browser/venv/bin/python sync_data.py --state-dir /var/lib/ptcg-browser
+TimeoutStartSec=15min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ptcg-browser
+Environment=PYTHONDONTWRITEBYTECODE=1

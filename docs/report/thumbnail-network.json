@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-25T03:39:21.952Z",
+  "note": "真实网络；首次缩略图含源图下载及转换，仅样本未被预热时为冷缓存；缓存请求为磁盘缓存，无浏览器缓存",
+  "results": [
+    {
+      "name": "基本草能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/16.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/16.webp",
+      "original": {
+        "bytes": 186381,
+        "ms": 493.6,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 20322,
+        "ms": 617.3,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 20322,
+        "ms": 4.9,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本草能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/17.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/17.webp",
+      "original": {
+        "bytes": 193753,
+        "ms": 63,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 17926,
+        "ms": 385.9,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 17926,
+        "ms": 2.7,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本超能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/22.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/22.webp",
+      "original": {
+        "bytes": 180367,
+        "ms": 49.5,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 18412,
+        "ms": 462.1,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 18412,
+        "ms": 5.8,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本火能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/14.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/14.webp",
+      "original": {
+        "bytes": 184044,
+        "ms": 51,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 21778,
+        "ms": 411.7,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 21778,
+        "ms": 11.7,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本水能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/24.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/24.webp",
+      "original": {
+        "bytes": 169155,
+        "ms": 47.5,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 17200,
+        "ms": 429.2,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 17200,
+        "ms": 2.2,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本雷能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/18.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/18.webp",
+      "original": {
+        "bytes": 171103,
+        "ms": 53,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 18122,
+        "ms": 357.9,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 18122,
+        "ms": 2,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本恶能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/10.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/10.webp",
+      "original": {
+        "bytes": 180399,
+        "ms": 43,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 17548,
+        "ms": 392.6,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 17548,
+        "ms": 1.9,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "基本斗能量",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/545/12.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/12.webp",
+      "original": {
+        "bytes": 187143,
+        "ms": 51.1,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 19914,
+        "ms": 383.7,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 19914,
+        "ms": 2,
+        "type": "image/webp"
+      }
+    }
+  ]
+}

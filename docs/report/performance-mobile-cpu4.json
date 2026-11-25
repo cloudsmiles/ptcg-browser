@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-25T03:26:06.996Z",
+  "browser": "150.0.7871.125",
+  "imagePolicy": "固定 1px 图片，排除外部 CDN 耗时",
+  "viewportWidth": 390,
+  "cpuRate": 4,
+  "runs": [
+    {
+      "first": {
+        "readyMs": 1373.199999988079,
+        "fcpMs": 1012,
+        "localTransferBytes": 1346416,
+        "longTasks": [
+          {
+            "start": 110.59999999403954,
+            "duration": 344
+          },
+          {
+            "start": 466.3999999910593,
+            "duration": 464
+          },
+          {
+            "start": 964.5,
+            "duration": 125
+          },
+          {
+            "start": 1094,
+            "duration": 277
+          }
+        ]
+      },
+      "searchMs": 400.3073320000003,
+      "loadMoreMedianMs": 23,
+      "loadMoreMaxMs": 43.20000000298023,
+      "heapBytes": 12958940,
+      "dom": {
+        "documents": 1,
+        "nodes": 2523,
+        "jsEventListeners": 89
+      },
+      "final": {
+        "renderedCards": 12,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 24,
+        "longestTaskMs": 464
+      },
+      "errors": []
+    },
+    {
+      "first": {
+        "readyMs": 950.7999999970198,
+        "fcpMs": 592,
+        "localTransferBytes": 1346416,
+        "longTasks": [
+          {
+            "start": 76,
+            "duration": 493
+          },
+          {
+            "start": 596.5999999940395,
+            "duration": 104
+          },
+          {
+            "start": 704.0999999940395,
+            "duration": 245
+          }
+        ]
+      },
+      "searchMs": 287.5705560000006,
+      "loadMoreMedianMs": 20.299999997019768,
+      "loadMoreMaxMs": 24.5,
+      "heapBytes": 12958544,
+      "dom": {
+        "documents": 1,
+        "nodes": 2523,
+        "jsEventListeners": 89
+      },
+      "final": {
+        "renderedCards": 12,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 20,
+        "longestTaskMs": 493
+      },
+      "errors": []
+    },
+    {
+      "first": {
+        "readyMs": 972,
+        "fcpMs": 604,
+        "localTransferBytes": 1346416,
+        "longTasks": [
+          {
+            "start": 79.6000000089407,
+            "duration": 499
+          },
+          {
+            "start": 608.1000000089407,
+            "duration": 107
+          },
+          {
+            "start": 718.5,
+            "duration": 253
+          }
+        ]
+      },
+      "searchMs": 292.26813500000026,
+      "loadMoreMedianMs": 23.400000005960464,
+      "loadMoreMaxMs": 36.70000000298023,
+      "heapBytes": 12943396,
+      "dom": {
+        "documents": 1,
+        "nodes": 2523,
+        "jsEventListeners": 89
+      },
+      "final": {
+        "renderedCards": 12,
+        "result": "找到 24,544 张卡牌 · 当前显示 2448 张",
+        "totalLongTasks": 19,
+        "longestTaskMs": 499
+      },
+      "errors": []
+    }
+  ]
+}

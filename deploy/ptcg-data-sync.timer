@@ -1,0 +1,11 @@
+[Unit]
+Description=每天北京时间 04:15 检查卡牌数据更新
+
+[Timer]
+OnCalendar=*-*-* 04:15:00 Asia/Shanghai
+RandomizedDelaySec=5min
+Persistent=true
+Unit=ptcg-data-sync.service
+
+[Install]
+WantedBy=timers.target

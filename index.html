@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="Vo8EoHHb0Fpha6JERw4b4I">
+<head data-page-node-id="iKr8cZivFelXql6E57EfO6">
+<meta charset="UTF-8" data-page-node-id="WqYxL9ig9t4gA3oiZDZpvc">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="N35bgCKC8VE7KoZDT6MlNz">
+<title>PTCG 卡牌图鉴 · 宝可梦卡牌浏览器</title>
+<meta name="description" content="浏览、搜索与筛选宝可梦集换式卡牌（PTCG）卡牌资料、图片与详情。" data-page-node-id="CcVRrDwdLBCxdJFmzXiYMN">
+<link rel="preconnect" href="https://images.pokemontcg.io" data-page-node-id="EytELOz7kEBieD7FuLneeD">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin data-page-node-id="xkrmnKts3N87Q6LHzl4eMd">
+<link rel="stylesheet" href="styles.css" data-page-node-id="w43DHNCD9AfFuo775zK4Pm">
+</head>
+<body data-page-node-id="hBj17t7YDM6f63jJOQard0">
+<header class="topbar" data-page-node-id="iH1q149lvCkXHVKArfExEn">
+  <div class="topbar-inner" data-page-node-id="mOlEzX3Ax8Yo5dbP4rlB2T">
+    <div class="brand" data-page-node-id="9YakD53A79M69sTJKNnacM">
+      <span class="pokeball" aria-hidden="true" data-page-node-id="nrmQbbNCpP0TlLJPFDLPUk"></span>
+      <div data-page-node-id="34wrgqjAViDhMvJJeGMIdz">
+        <h1 data-page-node-id="RfI1hQLs0HYW9VZEBi1DIi">PTCG 卡牌图鉴</h1>
+        <p data-page-node-id="GVBt7ylJu9pq1bpx5uELnb">宝可梦集换式卡牌浏览器</p>
+      </div>
+    </div>
+    <div class="topbar-actions" data-page-node-id="0YATWCcddPARGsrq7aeU4J">
+      <span class="lang-badge" data-page-node-id="7hoiOfAd3lAcz0BKD2Lkyd">简中版</span>
+      <span class="update-pill" id="updatePill" data-page-node-id="Rc8EfYsrbn3EfuzPFXWWGe">资料库载入中…</span>
+      <button class="icon-btn" id="favToggle" type="button" aria-pressed="false" title="只看收藏" data-page-node-id="LjtaEBYo2WucHgSkNq8QgE">
+        <svg viewBox="0 0 24 24" aria-hidden="true" data-page-node-id="etdvCUGWHuHkZ1Eyr5tpP2"><path d="M12 20.7 4.6 13.6a4.7 4.7 0 0 1 6.7-6.6l.7.7.7-.7a4.7 4.7 0 1 1 6.7 6.6Z" data-page-node-id="6QZ9xVAq8oEJxIAQ4LCMIX"/></svg>
+        <span data-page-node-id="mWABEvYBaBtsqBV669khWF">收藏</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="search-section" data-page-node-id="x7aNyJJGRr3D7Zftwtfb9E">
+  <div class="search-wrap" data-page-node-id="37oZ8hnD4rXP4VVHedb9o7">
+    <div class="search-box" data-page-node-id="cd4D8z1mYMBp9RoEA3WAqo">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" data-page-node-id="a2GzoLwk0P66WnGOvCAq19"><circle cx="11" cy="11" r="7" data-page-node-id="otZjhCBZ1zdW2JSL7HBth1"/><path d="m16.5 16.5 4 4" data-page-node-id="ynAC2F17pAe8c3HenpiyEJ"/></svg>
+      <input type="search" id="searchInput" placeholder="搜索卡牌名称、招式、特性或插画师…" autocomplete="off" aria-label="搜索卡牌" data-page-node-id="iF5Mk5qaE1sFG6zLrR4Qld">
+      <button type="button" class="clear-search" id="clearSearch" title="清空搜索" aria-label="清空搜索" data-page-node-id="NIOTCAYZgYgcCjq3jRG6bH">×</button>
+      <kbd data-page-node-id="mYZDDCCXi50HcR46EpUhNV">/</kbd>
+    </div>
+    <p class="search-hint" data-page-node-id="3n77Ll69uvYTy64CFxHxf1">试试 <button type="button" class="quick-term" data-term="皮卡丘" data-page-node-id="5ymyJsyWXPvVSG7KHD7yAc">皮卡丘</button>、<button type="button" class="quick-term" data-term="喷火龙" data-page-node-id="pIGyH1nHsOBjgtJsPAbUrW">喷火龙</button>、<button type="button" class="quick-term" data-term="伊布" data-page-node-id="WY0BLwhZ57LKt7e0eNKw36">伊布</button></p>
+  </div>
+</section>
+
+<section class="filters" aria-label="筛选条件" data-page-node-id="PimyBQsVW4C7kKFdoGFd0D">
+  <div class="filters-inner" data-page-node-id="v0QxKbqtw68ePKCYGA4fN1">
+    <div class="type-fold" id="typeFold">
+      <button type="button" class="type-fold-toggle" id="typeFoldToggle" aria-expanded="false" aria-controls="typeFoldBody">
+        <span class="tf-label">属性筛选</span>
+        <span class="tf-summary" id="typeSummary">全部属性</span>
+        <span class="tf-arrow" aria-hidden="true">▾</span>
+      </button>
+      <div class="type-fold-body" id="typeFoldBody" hidden>
+        <div class="type-row" id="typeRow" role="group" aria-label="按属性筛选"></div>
+      </div>
+    </div>
+    <div class="type-fold" id="classFold">
+      <button type="button" class="type-fold-toggle" id="classFoldToggle" aria-expanded="false" aria-controls="classFoldBody">
+        <span class="tf-label">卡牌与系列</span>
+        <span class="tf-summary" id="classSummary">全部卡牌</span>
+        <span class="tf-arrow" aria-hidden="true">▾</span>
+      </button>
+      <div class="type-fold-body" id="classFoldBody" hidden>
+        <div class="filter-row">
+          <label class="select-wrap">
+            <span>卡牌类别</span>
+            <select id="supertypeFilter">
+              <option value="">全部类别</option>
+              <option value="Pokemon">宝可梦</option>
+              <option value="Trainer">训练家</option>
+              <option value="Energy">能量</option>
+            </select>
+          </label>
+          <label class="select-wrap">
+            <span>系列类别</span>
+            <select id="catFilter"><option value="">全部类别</option></select>
+          </label>
+          <label class="select-wrap">
+            <span>扩展系列</span>
+            <select id="setFilter"><option value="">全部系列</option></select>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="type-fold" id="rarityFold">
+      <button type="button" class="type-fold-toggle" id="rarityFoldToggle" aria-expanded="false" aria-controls="rarityFoldBody">
+        <span class="tf-label">稀有度</span>
+        <span class="tf-summary" id="raritySummary">全部稀有度</span>
+        <span class="tf-arrow" aria-hidden="true">▾</span>
+      </button>
+      <div class="type-fold-body" id="rarityFoldBody" hidden>
+        <div class="rarity-section">
+          <div class="rarity-head">
+            <span class="rarity-head-title">范围</span>
+            <span class="rarity-scope" id="rarityScope"></span>
+            <button type="button" class="rarity-clear" id="rarityClear">清除选择</button>
+          </div>
+          <div class="rarity-table" id="rarityTable"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tool-row">
+      <label class="select-wrap">
+        <span>排序</span>
+        <select id="sortSelect">
+          <option value="release">发行时间（新→旧）</option>
+          <option value="number">卡号顺序</option>
+          <option value="name">名称 A→Z</option>
+          <option value="rarity">稀有度（高→低）</option>
+          <option value="hp">HP（高→低）</option>
+        </select>
+      </label>
+      <label class="check-wrap" title="仅显示标准赛制可用卡牌">
+        <input type="checkbox" id="standardOnly">
+        <span>标准赛制</span>
+      </label>
+      <button type="button" class="reset-btn" id="resetBtn">重置筛选</button>
+    </div>
+  </div>
+</section>
+
+<main class="main" data-page-node-id="AwioLn3G442JeDKelPzzbK">
+  <div class="result-bar" data-page-node-id="ra9iIMnVy1be1Y8SoLRx3c">
+    <p id="resultText" data-page-node-id="a0xT6U06ogHDnmRFZ4pFcv">正在载入卡牌资料…</p>
+    <div class="view-note" data-page-node-id="91muJBcLiNWqynmVIagGAD">点击卡牌查看详情 · 点击 ♥ 收藏</div>
+  </div>
+  <div class="card-grid" id="cardGrid" aria-live="polite" data-page-node-id="LEcgALGIiIxC5TE2p1znnJ"></div>
+  <div class="empty-state" id="emptyState" hidden data-page-node-id="Oyndp4qaHdrPx41IwQuhwn">
+    <div class="empty-ball" aria-hidden="true" data-page-node-id="vI2sAtZATvTiEYilflXifF"></div>
+    <h2 data-page-node-id="KDKRaq5S3P7WFQUO3ddRe7">没有找到符合条件的卡牌</h2>
+    <p data-page-node-id="yUcDHe8vIIaOV8KM066ug7">换个关键词，或放宽筛选条件再试试。</p>
+    <button type="button" id="emptyReset" data-page-node-id="hwnXX8Zo7l2VHjO5VhO42l">重置全部筛选</button>
+  </div>
+  <div class="load-more-wrap" id="loadMoreWrap" hidden data-page-node-id="1ybxeINFmGE1bR9MBT8iFi">
+    <button type="button" id="loadMore" data-page-node-id="fdHMJDgXvMQWHcDjQXEA6K">加载更多卡牌</button>
+  </div>
+</main>
+
+<footer class="footer" data-page-node-id="Nu1VQk24CVn0eosaPk1Kvg">
+  <p data-page-node-id="prUsajIBvr6Vo6ApBxpThh">数据来源：简中版卡牌资料与<strong data-page-node-id="NdPpOAuVNixbQ8vB7djURU">真实简体中文卡图</strong>来自 <a href="https://github.com/duanxr/PTCG-CHS-Datasets" target="_blank" rel="noopener" data-page-node-id="APzeLRZ8Pxb5usIoXBE9AU">PTCG-CHS-Datasets ↗</a>（24,544 张卡 / 246 个系列，非商业与学术研究用途）；日版 / 美版资料来自 <a href="https://github.com/tcgdex/cards-database" target="_blank" rel="noopener" data-page-node-id="9pxbKQ3rgnhUmBGwsAHBh2">TCGdex 开源卡牌数据库 ↗</a>（MIT 许可）。</p>
+  <p data-page-node-id="nqIRNjKv5Jj8GFHYAjzV7w">英文卡图来自 Pokémon TCG 官方图片 CDN，日文卡图来自 TCGdex 图片服务，简中卡图经 jsDelivr 加载（备用图床 GitHub Raw）；列表图片加载时保留无文字占位，详情支持查看文字卡面。本站仅作个人学习与研究用途，卡牌内容版权归宝可梦公司及相关权利方所有，请勿用于商业目的或再分发。</p>
+</footer>
+
+<button type="button" class="to-top" id="toTop" title="返回顶部" aria-label="返回顶部" data-page-node-id="XOVavHoJf7n3ZCSI47N1HZ">↑</button>
+
+<div class="modal-backdrop" id="modal" hidden data-page-node-id="Aq1bAQbLh5OhkWQsA5EhUa">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" data-page-node-id="95lm7eKxscCa0zKuCrqwI2">
+    <button type="button" class="modal-close" id="modalClose" aria-label="关闭详情" data-page-node-id="jZsndXr3bnx2sDUdALG59h">×</button>
+    <div class="modal-body" id="modalBody" data-page-node-id="pAaWzBE4WX1rCUEBLHcOKB"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" data-page-node-id="3eOGezChayFt6x4ZNKuhyJ"></div>
+
+<script defer src="data/zh-bootstrap.js"></script>
+<script defer src="data-loader.js"></script>
+<script defer src="virtual-grid.js"></script>
+<script defer src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-25T03:41:01.924Z",
+  "note": "真实网络；首次缩略图含源图下载及转换，仅样本未被预热时为冷缓存；缓存请求为磁盘缓存，无浏览器缓存",
+  "results": [
+    {
+      "name": "藤藤蛇",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/543/0.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/543/0.webp",
+      "original": {
+        "bytes": 268433,
+        "ms": 314.1,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 29248,
+        "ms": 10.2,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 29248,
+        "ms": 2.9,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "藤藤蛇",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/543/1.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/543/1.webp",
+      "original": {
+        "bytes": 271078,
+        "ms": 60.9,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 29740,
+        "ms": 4.2,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 29740,
+        "ms": 2.5,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "虫宝包",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/542/0.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/542/0.webp",
+      "original": {
+        "bytes": 262349,
+        "ms": 58.2,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 24672,
+        "ms": 3.4,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 24672,
+        "ms": 3.4,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "虫宝包",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/542/1.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/542/1.webp",
+      "original": {
+        "bytes": 265009,
+        "ms": 57.9,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 25306,
+        "ms": 3,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 25306,
+        "ms": 2.6,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "火箭队的拉达",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/539/0.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/539/0.webp",
+      "original": {
+        "bytes": 253634,
+        "ms": 49.7,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 27750,
+        "ms": 3.6,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 27750,
+        "ms": 2,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "火箭队的拉达",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/539/1.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/539/1.webp",
+      "original": {
+        "bytes": 256597,
+        "ms": 51.8,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 28598,
+        "ms": 2.7,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 28598,
+        "ms": 1.5,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "火箭队的拉达",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/539/2.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/539/2.webp",
+      "original": {
+        "bytes": 329429,
+        "ms": 57.1,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 41978,
+        "ms": 2.9,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 41978,
+        "ms": 1.9,
+        "type": "image/webp"
+      }
+    },
+    {
+      "name": "火箭队的拉达",
+      "originalUrl": "https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/img/539/3.png",
+      "thumbnailUrl": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/539/3.webp",
+      "original": {
+        "bytes": 295972,
+        "ms": 52.4,
+        "type": "image/png"
+      },
+      "firstThumbnail": {
+        "bytes": 33610,
+        "ms": 2.7,
+        "type": "image/webp"
+      },
+      "cachedThumbnail": {
+        "bytes": 33610,
+        "ms": 1.7,
+        "type": "image/webp"
+      }
+    }
+  ]
+}

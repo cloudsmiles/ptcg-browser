@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-25T03:41:42.541Z",
+  "note": "首批 48 张已预热，未拦截 CDN 或图片响应",
+  "runs": [
+    {
+      "ratio": 1,
+      "visibleImages": [
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/16.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/17.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/22.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/14.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/24.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/18.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/10.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/12.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/20.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/23.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/15.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/25.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/19.webp",
+          "width": 219,
+          "height": 307
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/240/545/11.webp",
+          "width": 219,
+          "height": 307
+        }
+      ],
+      "imageBytes": 198892
+    },
+    {
+      "ratio": 2,
+      "visibleImages": [
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/16.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/17.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/22.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/14.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/24.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/18.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/10.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/12.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/20.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/23.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/15.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/25.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/19.webp",
+          "width": 137,
+          "height": 192
+        },
+        {
+          "url": "http://127.0.0.1:8000/thumbnails/76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94/480/545/11.webp",
+          "width": 137,
+          "height": 192
+        }
+      ],
+      "imageBytes": 900282
+    }
+  ]
+}
