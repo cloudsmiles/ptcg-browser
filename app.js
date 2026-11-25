@@ -100,7 +100,11 @@
   function isHighRarity(card) { return (card.rrank || 0) >= 6; }
   function typeColor(t) { return TYPE_COLORS[t] || '#9aa3b5'; }
   function typeLabel(t) { return TYPE_CN[t] || t; }
-  function imgOf(c, large) { return large ? (c.big || c.img || '') : (c.img || c.big || ''); }
+  function localImage(url) {
+    var match = (url || '').match(/^https:\/\/(?:cdn\.jsdelivr\.net\/gh\/duanxr\/PTCG-CHS-Datasets@|raw\.githubusercontent\.com\/duanxr\/PTCG-CHS-Datasets\/)([a-f0-9]{40})\/img\/(\d+)\/(\d+)\.png$/);
+    return match ? 'originals/' + match[1] + '/' + match[2] + '/' + match[3] + '.png' : url || '';
+  }
+  function imgOf(c, large) { return localImage(large ? (c.big || c.img || '') : (c.img || c.big || '')); }
 
   // 本地生成的简体中文卡面：外部卡图加载失败时自动露出，保证永远有内容、且为中文
   function typeIcon(t) {
@@ -181,7 +185,7 @@
     if (!original) return '';
     var thumbnail = !large && thumbnailOf(c, 240);
     var src = thumbnail || original;
-    var alt = thumbnail ? original : c.altimg || '';
+    var alt = thumbnail ? original : localImage(c.altimg);
     var responsive = thumbnail ? ' srcset="' + esc(src) + ' 240w, ' + esc(thumbnailOf(c, 480)) +
       ' 480w" sizes="(max-width: 640px) calc((100vw - 44px) / 2), 220px"' : '';
     return '<img class="real-img" src="' + esc(src) + '"' + responsive +
@@ -632,8 +636,8 @@
       '</div>' +
       '<div class="modal-thumbs">' +
         '<button type="button" class="' + (large ? '' : 'active') + '" data-face="1">文字卡面</button>' +
-        (large ? '<img class="active real-img" src="' + esc(large) + '"' + (c.altimg ? ' data-alt="' + esc(c.altimg) + '"' : '') + ' data-src="' + esc(large) + '" alt="卡牌大图">' : '') +
-        (small && small !== large ? '<img class="real-img" src="' + esc(small) + '"' + (c.altimg ? ' data-alt="' + esc(c.altimg) + '"' : '') + ' data-src="' + esc(small) + '" alt="卡牌图">' : '') +
+        (large ? '<img class="active real-img" src="' + esc(large) + '"' + (c.altimg ? ' data-alt="' + esc(localImage(c.altimg)) + '"' : '') + ' data-src="' + esc(large) + '" alt="卡牌大图">' : '') +
+        (small && small !== large ? '<img class="real-img" src="' + esc(small) + '"' + (c.altimg ? ' data-alt="' + esc(localImage(c.altimg)) + '"' : '') + ' data-src="' + esc(small) + '" alt="卡牌图">' : '') +
       '</div></div><div class="modal-info-col">' +
       '<div class="modal-set-line">' + (logo ? '<img src="' + esc(logo) + '" alt="">' : '') +
         '<span>' + esc(c.se) + ' · ' + esc(c.sn) + ' · ' + esc((c.sd || '').replace(/\//g, '-')) + ' · #' + esc(c.lid) + '</span></div>' +

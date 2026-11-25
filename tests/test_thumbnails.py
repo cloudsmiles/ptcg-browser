@@ -39,6 +39,20 @@ class ThumbnailTest(unittest.TestCase):
                 thumbnails.download_original(REVISION, '545', '16')
             request.assert_not_called()
 
+    def test_original_is_validated_and_cached(self):
+        image = BytesIO()
+        Image.new('RGB', (20, 30)).save(image, 'PNG')
+        route = f'/originals/{REVISION}/534/47.png'
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'download_original', return_value=image.getvalue()
+            ) as download:
+                self.assertEqual(thumbnails.get_original(route), image.getvalue())
+                self.assertEqual(thumbnails.get_original(route), image.getvalue())
+                self.assertEqual(download.call_count, 1)
+                with self.assertRaises(ValueError):
+                    thumbnails.get_original('/originals/../../etc/passwd')
+
     def test_sizes_cache_and_invalid_path(self):
         original = BytesIO()
         Image.new('RGB', (600, 840), '#df4824').save(original, 'PNG')

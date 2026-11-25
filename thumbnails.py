@@ -17,12 +17,42 @@ QUEUE_TIMEOUT = 1
 DOWNLOAD_TIMEOUT = 12
 
 
+ORIGINAL_PATTERN = re.compile(r'^/originals/([a-f0-9]{40})/(\d{1,6})/(\d{1,6})\.png$')
+ORIGINAL_SLOTS = threading.BoundedSemaphore(16)
+ORIGINAL_LOCKS = [threading.Lock() for _ in range(128)]
+
+
 def original_url(request_path):
     match = PATTERN.fullmatch(request_path)
     if not match:
-        raise ValueError("缩略图路径无效")
+        raise ValueError('缩略图路径无效')
     revision, _, set_id, number = match.groups()
-    return f"https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@{revision}/img/{set_id}/{number}.png"
+    # 相对路径兼容 /ptcg/ 等反向代理前缀。
+    return f'../../../../originals/{revision}/{set_id}/{number}.png'
+
+
+def get_original(request_path):
+    match = ORIGINAL_PATTERN.fullmatch(request_path)
+    if not match:
+        raise ValueError('原图路径无效')
+    revision, set_id, number = match.groups()
+    target = CACHE / 'originals' / revision / set_id / f'{number}.png'
+    if target.is_file():
+        return target.read_bytes()
+    with bounded_slot(ORIGINAL_LOCKS[hash(match.groups()) % len(ORIGINAL_LOCKS)]):
+        if target.is_file():
+            return target.read_bytes()
+        with bounded_slot(ORIGINAL_SLOTS):
+            body = download_original(revision, set_id, number)
+            with Image.open(BytesIO(body)) as image:
+                if image.format != 'PNG' or image.width * image.height > 20_000_000:
+                    raise OSError('原图格式或尺寸无效')
+                image.verify()
+            target.parent.mkdir(parents=True, exist_ok=True)
+            temporary = target.with_suffix('.tmp')
+            temporary.write_bytes(body)
+            temporary.replace(target)
+            return body
 
 
 @contextmanager

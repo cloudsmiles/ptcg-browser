@@ -29,9 +29,38 @@ class ServerTest(unittest.TestCase):
                 response.read()
                 self.assertEqual(response.status, 307)
                 self.assertEqual(response.getheader('Location'),
-                                 f'https://cdn.jsdelivr.net/gh/duanxr/PTCG-CHS-Datasets@{revision}/img/545/16.png')
+                                 f'../../../../originals/{revision}/545/16.png')
                 self.assertEqual(response.getheader('Cache-Control'), 'no-store')
                 connection.close()
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join()
+
+    def test_original_response_and_invalid_path(self):
+        spec = importlib.util.spec_from_file_location('server', ROOT / 'serve.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        server = ThreadingHTTPServer(('127.0.0.1', 0), module.Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            connection = http.client.HTTPConnection(*server.server_address)
+            revision = '76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94'
+            with patch.object(module.thumbnails, 'download_original') as download:
+                connection.request('GET', '/originals/https://example.com/image.png')
+                response = connection.getresponse()
+                response.read()
+                self.assertEqual(response.status, 400)
+                download.assert_not_called()
+            with patch.object(module.thumbnails, 'get_original', return_value=b'png-content'):
+                connection.request('GET', f'/originals/{revision}/534/47.png')
+                response = connection.getresponse()
+                self.assertEqual(response.status, 200)
+                self.assertEqual(response.getheader('Content-Type'), 'image/png')
+                self.assertIsNone(response.getheader('Location'))
+                self.assertEqual(response.read(), b'png-content')
+            connection.close()
         finally:
             server.shutdown()
             server.server_close()

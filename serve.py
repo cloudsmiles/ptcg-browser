@@ -55,6 +55,22 @@ class Handler(SimpleHTTPRequestHandler):
 
     def send_head(self):
         request_path = unquote(urlsplit(self.path).path)
+        if request_path.startswith('/originals/'):
+            try:
+                body = thumbnails.get_original(request_path)
+            except ValueError:
+                self.send_error(400, 'Invalid original path')
+                return None
+            except OSError:
+                self.response_cache_control = 'no-store'
+                self.send_error(503, 'Original temporarily unavailable')
+                return None
+            self.response_cache_control = 'public, max-age=31536000, immutable'
+            self.send_response(200)
+            self.send_header('Content-Type', 'image/png')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            return BytesIO(body)
         if request_path.startswith('/thumbnails/'):
             try:
                 body = thumbnails.get_thumbnail(request_path)

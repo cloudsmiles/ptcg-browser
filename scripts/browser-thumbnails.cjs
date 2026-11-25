@@ -17,17 +17,17 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
       await page.locator('.card-tile').first().click();
       await page.waitForSelector('#mainImage.loaded');
       const detail = await page.locator('#mainImage').evaluate(img => img.currentSrc);
-      assert.ok(detail.startsWith('https://cdn.jsdelivr.net/'));
+      assert.ok(detail.includes('/originals/'));
       console.log(`PASS DPR ${ratio}：列表自动选择缩略图，详情使用原图`);
       await page.close();
     }
     const page = await browser.newPage();
     await page.route('**/thumbnails/**', route => route.fulfill({ status: 502, body: 'unavailable' }));
-    await page.route('https://**/*', route => route.fulfill({ contentType: 'image/png', body: png }));
+    await page.route('**/originals/**', route => route.fulfill({ contentType: 'image/png', body: png }));
     await page.goto(base);
     await page.waitForSelector('.card-tile .real-img.loaded');
     const image = await page.locator('.card-tile .real-img').first().evaluate(img => ({ src: img.currentSrc, srcset: img.getAttribute('srcset') }));
-    assert.ok(image.src.startsWith('https://cdn.jsdelivr.net/'));
+    assert.ok(image.src.includes('/originals/'));
     assert.equal(image.srcset, null);
     console.log('PASS 缩略图失败自动回退原图，清除 srcset 避免重复失败');
     await page.close();
