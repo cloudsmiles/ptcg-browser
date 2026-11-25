@@ -62,7 +62,11 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_error(400, 'Invalid thumbnail path')
                 return None
             except OSError:
-                self.send_error(502, 'Thumbnail unavailable')
+                self.response_cache_control = 'no-store'
+                self.send_response(307)
+                self.send_header('Location', thumbnails.original_url(request_path))
+                self.send_header('Content-Length', '0')
+                self.end_headers()
                 return None
             self.response_cache_control = 'public, max-age=31536000, immutable'
             self.send_response(200)

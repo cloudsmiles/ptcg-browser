@@ -1,6 +1,7 @@
 """缩略图使用本地图片夹具验证，不依赖公网。"""
 from io import BytesIO
 from pathlib import Path
+import threading
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -11,6 +12,33 @@ REVISION = '76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94'
 
 
 class ThumbnailTest(unittest.TestCase):
+    def test_busy_download_queue_has_bounded_wait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'DOWNLOAD_SLOTS', threading.BoundedSemaphore(0)
+            ), patch.object(thumbnails, 'QUEUE_TIMEOUT', 0.01, create=True):
+                with self.assertRaisesRegex(OSError, '繁忙'):
+                    thumbnails.get_thumbnail(f'/thumbnails/{REVISION}/240/545/16.webp')
+
+    def test_busy_image_lock_has_bounded_wait(self):
+        lock = threading.Lock()
+        lock.acquire()
+        self.addCleanup(lock.release)
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'LOCKS', [lock]
+            ), patch.object(thumbnails, 'QUEUE_TIMEOUT', 0.01, create=True):
+                with self.assertRaisesRegex(OSError, '繁忙'):
+                    thumbnails.get_thumbnail(f'/thumbnails/{REVISION}/240/545/16.webp')
+
+    def test_expired_download_budget_does_not_start_request(self):
+        with patch.object(thumbnails.time, 'monotonic', side_effect=[0, 13, 14]), patch.object(
+            thumbnails, 'urlopen'
+        ) as request:
+            with self.assertRaisesRegex(OSError, '原图下载失败'):
+                thumbnails.download_original(REVISION, '545', '16')
+            request.assert_not_called()
+
     def test_sizes_cache_and_invalid_path(self):
         original = BytesIO()
         Image.new('RGB', (600, 840), '#df4824').save(original, 'PNG')
