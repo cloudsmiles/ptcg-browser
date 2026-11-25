@@ -888,7 +888,8 @@
       var script = document.createElement('script');
       script.src = LANG_DATA.zh.indexUrl || 'data/zh-index.js';
       script.async = true;
-      script.fetchPriority = 'low';
+      // 首屏绘制后优先补齐索引，避免 HTTP 连接被慢图片长期占满。
+      script.fetchPriority = 'high';
       script.onload = function () {
         script.remove();
         try {
@@ -937,7 +938,7 @@
       status.setAttribute('role', 'status');
       status.textContent = '首批卡牌已就绪，正在载入完整卡牌索引…';
       $('resultText').parentNode.appendChild(status);
-      // 先让首屏布局绘制并发出图片请求，再启动低优先级后台数据加载。
+      // 先让首屏布局绘制并发出图片请求，再启动后台数据加载。
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           setTimeout(function () {

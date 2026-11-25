@@ -71,6 +71,7 @@ node scripts/browser-scroll-regression.cjs
 node scripts/browser-image-loading.cjs
 node scripts/browser-thumbnails.cjs
 node scripts/browser-deferred-index.cjs
+node scripts/browser-slow-images.cjs
 PERF_CHECK=1 node scripts/browser-performance.cjs docs/report/performance-after.json
 PERF_CHECK=1 PERF_WIDTH=390 PERF_CPU_RATE=4 node scripts/browser-performance.cjs docs/report/performance-mobile-cpu4.json
 ```
