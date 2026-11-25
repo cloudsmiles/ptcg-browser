@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class ServerTest(unittest.TestCase):
-    def test_thumbnail_failure_redirects_to_original_without_caching(self):
+    def test_pending_thumbnail_never_redirects_to_original(self):
         spec = importlib.util.spec_from_file_location('server', ROOT / 'serve.py')
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -21,15 +21,16 @@ class ServerTest(unittest.TestCase):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
-            with patch.object(module.thumbnails, 'get_thumbnail', side_effect=OSError('下载繁忙')):
+            with patch.object(module.thumbnails, 'request_thumbnail', return_value=None), patch.object(
+                module.thumbnails, 'get_thumbnail', side_effect=OSError('下载繁忙')
+            ):
                 connection = http.client.HTTPConnection(*server.server_address)
                 revision = '76c1f5214bcd766a6ae15ef2904fb0adeb4d5a94'
                 connection.request('GET', f'/thumbnails/{revision}/480/545/16.webp')
                 response = connection.getresponse()
                 response.read()
-                self.assertEqual(response.status, 307)
-                self.assertEqual(response.getheader('Location'),
-                                 f'../../../../originals/{revision}/545/16.png')
+                self.assertEqual(response.status, 202)
+                self.assertIsNone(response.getheader('Location'))
                 self.assertEqual(response.getheader('Cache-Control'), 'no-store')
                 connection.close()
         finally:

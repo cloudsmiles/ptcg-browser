@@ -160,6 +160,42 @@ class ThumbnailTest(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         thumbnails.get_thumbnail(path)
 
+    def test_v2_thumbnail_ignores_old_compression_cache(self):
+        original = BytesIO()
+        Image.new('RGB', (600, 840), '#df4824').save(original, 'PNG')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            old = root / REVISION / '240' / '545' / '16.webp'
+            old.parent.mkdir(parents=True)
+            old.write_bytes(b'old-cache')
+            with patch.object(thumbnails, 'CACHE', root), patch.object(
+                thumbnails, 'download_original', return_value=original.getvalue()
+            ):
+                body = thumbnails.get_thumbnail(f'/thumbnails/v2/{REVISION}/240/545/16.webp')
+                self.assertEqual(Image.open(BytesIO(body)).format, 'WEBP')
+                self.assertTrue((root / 'v2' / REVISION / '240' / '545' / '16.webp').is_file())
+                self.assertEqual(old.read_bytes(), b'old-cache')
+
+    def test_background_thumbnail_is_compressed_and_cached(self):
+        original = BytesIO()
+        Image.new('RGB', (1200, 1680), '#df4824').save(original, 'PNG')
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(
+                thumbnails, 'download_original', return_value=original.getvalue()
+            ) as download:
+                route = f'/thumbnails/v2/{REVISION}/240/545/99.webp'
+                self.assertIsNone(thumbnails.request_thumbnail(route))
+                with thumbnails.ORIGINAL_JOBS_GUARD:
+                    future = thumbnails.ORIGINAL_JOBS[('thumbnail', REVISION, '545', '99')][0]
+                future.result(timeout=5)
+                body = thumbnails.request_thumbnail(route)
+                self.assertEqual(Image.open(BytesIO(body)).size, (240, 336))
+                self.assertLess(len(body), len(original.getvalue()) // 4)
+                detail = thumbnails.get_thumbnail(f'/thumbnails/v2/{REVISION}/960/545/99.webp')
+                self.assertEqual(Image.open(BytesIO(detail)).size, (960, 1344))
+                self.assertEqual(Image.open(BytesIO(detail)).format, 'WEBP')
+                self.assertEqual(download.call_count, 1)
+
     def test_failure_does_not_leave_bad_cache(self):
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(thumbnails, 'CACHE', Path(directory)), patch.object(

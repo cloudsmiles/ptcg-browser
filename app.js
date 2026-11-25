@@ -102,7 +102,7 @@
   function typeLabel(t) { return TYPE_CN[t] || t; }
   function localImage(url) {
     var match = (url || '').match(/^https:\/\/(?:cdn\.jsdelivr\.net\/gh\/duanxr\/PTCG-CHS-Datasets@|raw\.githubusercontent\.com\/duanxr\/PTCG-CHS-Datasets\/)([a-f0-9]{40})\/img\/(\d+)\/(\d+)\.png$/);
-    return match ? 'originals/' + match[1] + '/' + match[2] + '/' + match[3] + '.png' : url || '';
+    return match ? 'thumbnails/v2/' + match[1] + '/960/' + match[2] + '/' + match[3] + '.webp' : url || '';
   }
   function imgOf(c, large) { return localImage(large ? (c.big || c.img || '') : (c.img || c.big || '')); }
 
@@ -172,7 +172,9 @@
         img.classList.remove('loaded');
         retryTimer = window.setTimeout(function () {
           if (!img.isConnected) return;
-          var next = img.getAttribute('data-alt') || img.src;
+          var next = img.src;
+          // 列表重试仍选择当前缩略图尺寸，不切换到详情原图。
+          if ((img.currentSrc || '').indexOf('/thumbnails/') >= 0) next = img.currentSrc;
           img.removeAttribute('srcset');
           img.removeAttribute('sizes');
           img.src = next.split('?')[0] + '?image_retry=' + attempts;
@@ -204,15 +206,16 @@
   function thumbnailOf(card, width) {
     var match = (card.img || '').match(/^https:\/\/cdn\.jsdelivr\.net\/gh\/duanxr\/PTCG-CHS-Datasets@([a-f0-9]{40})\/img\/(\d+)\/(\d+)\.png$/);
     if (!match) return '';
-    return 'thumbnails/' + match[1] + '/' + width + '/' + match[2] + '/' + match[3] + '.webp';
+    return 'thumbnails/v2/' + match[1] + '/' + width + '/' + match[2] + '/' + match[3] + '.webp';
   }
 
   function realImgTag(c, large) {
     var original = imgOf(c, large);
     if (!original) return '';
     var thumbnail = !large && thumbnailOf(c, 240);
+    if (!large && !thumbnail) return '';
     var src = thumbnail || original;
-    var alt = thumbnail ? original : localImage(c.altimg);
+    var alt = large ? localImage(c.altimg) : '';
     var responsive = thumbnail ? ' srcset="' + esc(src) + ' 240w, ' + esc(thumbnailOf(c, 480)) +
       ' 480w" sizes="(max-width: 640px) calc((100vw - 44px) / 2), 220px"' : '';
     return '<img class="real-img" src="' + esc(src) + '"' + responsive +

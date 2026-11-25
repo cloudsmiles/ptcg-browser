@@ -17,24 +17,26 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACAAAAAwCAIAAAD/zu84AAAASElEQVR
       await page.locator('.card-tile').first().click();
       await page.waitForSelector('#mainImage.loaded');
       const detail = await page.locator('#mainImage').evaluate(img => img.currentSrc);
-      assert.ok(detail.includes('/originals/'));
-      console.log(`PASS DPR ${ratio}：列表自动选择缩略图，详情使用原图`);
+      assert.ok(detail.includes('/thumbnails/v2/') && detail.includes('/960/'));
+      console.log(`PASS DPR ${ratio}：列表自动选择缩略图，详情使用压缩 WebP`);
       await page.close();
     }
     const page = await browser.newPage();
+    const originalRequests = [];
+    page.on('request', request => { if (request.url().includes('/originals/')) originalRequests.push(request.url()); });
     await page.route('**/thumbnails/**', route => route.fulfill({ status: 502, body: 'unavailable' }));
-    await page.route('**/originals/**', route => route.fulfill({ contentType: 'image/png', body: png }));
     await page.goto(base);
-    await page.waitForSelector('.card-tile .real-img.loaded');
-    const image = await page.locator('.card-tile .real-img').first().evaluate(img => ({ src: img.currentSrc, srcset: img.getAttribute('srcset') }));
-    assert.ok(image.src.includes('/originals/'));
-    assert.equal(image.srcset, null);
-    console.log('PASS 缩略图失败自动回退原图，清除 srcset 避免重复失败');
+    await page.waitForTimeout(600);
+    assert.equal(await page.locator('.card-tile .real-img.loaded').count(), 0);
+    assert.deepEqual(originalRequests, []);
+    assert.ok(await page.locator('.image-status').first().textContent());
+    console.log('PASS 列表缩略图失败保留提示，不请求原图');
     await page.close();
     const pendingPage = await browser.newPage();
     const attempts = new Map();
-    await pendingPage.route('**/thumbnails/**', route => route.fulfill({ status: 502, body: 'busy' }));
-    await pendingPage.route('**/originals/**', route => {
+    const forbidden = [];
+    pendingPage.on('request', request => { if (request.url().includes('/originals/') || request.url().includes('/960/')) forbidden.push(request.url()); });
+    await pendingPage.route('**/thumbnails/**', route => {
       const key = route.request().url().split('?')[0];
       const count = (attempts.get(key) || 0) + 1;
       attempts.set(key, count);
@@ -57,7 +59,9 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACAAAAAwCAIAAAD/zu84AAAASElEQVR
     const ready = await first.evaluate(img => ({ src: img.currentSrc, width: img.naturalWidth }));
     assert.ok(ready.width > 0 && ready.width <= 32);
     assert.equal(attempts.get(ready.src.split('?')[0]), 3);
-    console.log('PASS 原图两次处理中后自动重试成功，等待期间保留文字卡面');
+    assert.ok(ready.src.includes('/thumbnails/v2/'));
+    assert.deepEqual(forbidden, []);
+    console.log('PASS 缩略图两次处理中后自动重试成功，列表始终不请求原图或详情图');
     await pendingPage.close();
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

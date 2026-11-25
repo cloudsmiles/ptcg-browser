@@ -79,17 +79,19 @@ class Handler(SimpleHTTPRequestHandler):
             return BytesIO(body)
         if request_path.startswith('/thumbnails/'):
             try:
-                body = thumbnails.get_thumbnail(request_path)
+                body = thumbnails.request_thumbnail(request_path)
             except ValueError:
                 self.send_error(400, 'Invalid thumbnail path')
                 return None
-            except OSError:
+            if body is None:
+                body = b'<svg xmlns="http://www.w3.org/2000/svg" width="320" height="1"></svg>'
                 self.response_cache_control = 'no-store'
-                self.send_response(307)
-                self.send_header('Location', thumbnails.original_url(request_path))
-                self.send_header('Content-Length', '0')
+                self.send_response(202)
+                self.send_header('Retry-After', '2')
+                self.send_header('Content-Type', 'image/svg+xml')
+                self.send_header('Content-Length', str(len(body)))
                 self.end_headers()
-                return None
+                return BytesIO(body)
             self.response_cache_control = 'public, max-age=31536000, immutable'
             self.send_response(200)
             self.send_header('Content-Type', 'image/webp')

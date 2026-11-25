@@ -11,7 +11,7 @@ from urllib.request import Request, urlopen
 from PIL import Image, ImageOps
 
 CACHE = Path(__file__).resolve().parent / '.cache' / 'thumbnails'
-PATTERN = re.compile(r'^/thumbnails/([a-f0-9]{40})/(240|480)/(\d{1,6})/(\d{1,6})\.webp$')
+PATTERN = re.compile(r'^/thumbnails/(?:v2/)?([a-f0-9]{40})/(240|480|960)/(\d{1,6})/(\d{1,6})\.webp$')
 LOCKS = [threading.Lock() for _ in range(64)]
 DOWNLOAD_SLOTS = threading.BoundedSemaphore(4)
 MAX_BYTES = 12 * 1024 * 1024
@@ -61,13 +61,33 @@ def request_original(request_path):
     return None
 
 
-def original_url(request_path):
+def request_thumbnail(request_path):
+    """仅后台生成压缩缩略图，不将浏览器重定向到原图。"""
     match = PATTERN.fullmatch(request_path)
     if not match:
         raise ValueError('缩略图路径无效')
-    revision, _, set_id, number = match.groups()
-    # 相对路径兼容 /ptcg/ 等反向代理前缀。
-    return f'../../../../originals/{revision}/{set_id}/{number}.png'
+    revision, width, set_id, number = match.groups()
+    target = CACHE / 'v2' / revision / width / set_id / f'{number}.webp'
+    if target.is_file():
+        return target.read_bytes()
+    now = time.monotonic()
+    # 三种尺寸共用同一个任务，一次生成列表及详情压缩图。
+    key = ('thumbnail', revision, set_id, number)
+    with ORIGINAL_JOBS_GUARD:
+        for old_key, (future, submitted) in list(ORIGINAL_JOBS.items()):
+            if future.done() and now - submitted >= 2:
+                ORIGINAL_JOBS.pop(old_key)
+        if key not in ORIGINAL_JOBS and len(ORIGINAL_JOBS) < MAX_ORIGINAL_JOBS:
+            ORIGINAL_JOBS[key] = (ORIGINAL_WORKERS.submit(_background_thumbnail, request_path), now)
+    return None
+
+
+def _background_thumbnail(request_path):
+    try:
+        return get_thumbnail(request_path)
+    except OSError as error:
+        logging.warning('缩略图后台生成失败 %s: %r', request_path, error)
+        raise
 
 
 def get_original(request_path):
@@ -162,11 +182,11 @@ def get_thumbnail(request_path):
     if not match:
         raise ValueError('缩略图路径无效')
     revision, width, set_id, number = match.groups()
-    target = CACHE / revision / width / set_id / f'{number}.webp'
+    target = CACHE / 'v2' / revision / width / set_id / f'{number}.webp'
     if target.is_file():
         return target.read_bytes()
     source_key = (revision, set_id, number)
-    # 同一原图的两种尺寸共用锁，并在一次下载中生成，避免重复访问 CDN。
+    # 同一原图的三种尺寸共用锁，并在一次下载中生成，避免重复访问 CDN。
     with bounded_slot(LOCKS[hash(source_key) % len(LOCKS)]):
         if target.is_file():
             return target.read_bytes()
@@ -176,12 +196,12 @@ def get_thumbnail(request_path):
                 if image.width * image.height > 20_000_000:
                     raise OSError('卡图像素数超过处理限制')
                 image = ImageOps.exif_transpose(image).convert('RGB')
-                for size in (240, 480):
+                for size in (240, 480, 960):
                     thumbnail = image.copy()
                     thumbnail.thumbnail((size, size * 2), Image.Resampling.LANCZOS)
                     body = BytesIO()
-                    thumbnail.save(body, 'WEBP', quality=80, method=4)
-                    destination = CACHE / revision / str(size) / set_id / f'{number}.webp'
+                    thumbnail.save(body, 'WEBP', quality=60 if size == 960 else 45, method=6)
+                    destination = CACHE / 'v2' / revision / str(size) / set_id / f'{number}.webp'
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     temporary = destination.with_suffix('.tmp')
                     temporary.write_bytes(body.getvalue())
